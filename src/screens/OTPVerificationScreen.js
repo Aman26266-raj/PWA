@@ -79,16 +79,8 @@ export default function OTPVerificationScreen({ navigation, route }) {
       // For demo purposes, accept any 6-digit OTP
       // In production, verify with backend
       if (otpCode.length === 6) {
-        Alert.alert(
-          'Success',
-          'Phone number verified successfully!',
-          [
-            {
-              text: 'Continue',
-              onPress: () => navigation.navigate('ChooseLocker'),
-            },
-          ]
-        );
+        // Navigate directly to ChooseLocker screen
+        navigation.navigate('ChooseLocker');
       } else {
         Alert.alert('Error', 'Invalid OTP. Please try again.');
         setOtp(['', '', '', '', '', '']);
