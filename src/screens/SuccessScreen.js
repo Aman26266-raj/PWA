@@ -61,58 +61,86 @@ export default function SuccessScreen({ navigation, route }) {
   };
 
   const handleOpenLocker = () => {
-    Alert.alert(
-      'Open Locker',
-      `Use PIN ${pin} to open locker ${lockerId}. The locker door will unlock for 30 seconds.`,
-      [
-        {
-          text: 'Simulate Open',
-          onPress: () => {
-            Alert.alert('Success', 'Locker opened successfully!');
+    if (Platform.OS === 'web') {
+      const confirmed = window.confirm(
+        `Use PIN ${pin} to open locker ${lockerId}. The locker door will unlock for 30 seconds.\n\nPress OK to simulate opening.`
+      );
+      if (confirmed) {
+        window.alert('Success! Locker opened successfully!');
+      }
+    } else {
+      Alert.alert(
+        'Open Locker',
+        `Use PIN ${pin} to open locker ${lockerId}. The locker door will unlock for 30 seconds.`,
+        [
+          {
+            text: 'Simulate Open',
+            onPress: () => {
+              Alert.alert('Success', 'Locker opened successfully!');
+            },
           },
-        },
-        { text: 'Cancel', style: 'cancel' },
-      ]
-    );
+          { text: 'Cancel', style: 'cancel' },
+        ]
+      );
+    }
   };
 
   const handleExtendRental = () => {
-    Alert.alert(
-      'Extend Rental',
-      'Would you like to extend your rental period?',
-      [
-        {
-          text: 'Yes',
-          onPress: () => {
-            // Navigate back to payment screen with extend flag
-            navigation.navigate('Payment', { lockerId, isExtending: true });
+    if (Platform.OS === 'web') {
+      const confirmed = window.confirm(
+        'Would you like to extend your rental period?'
+      );
+      if (confirmed) {
+        navigation.navigate('Payment', { lockerId, isExtending: true });
+      }
+    } else {
+      Alert.alert(
+        'Extend Rental',
+        'Would you like to extend your rental period?',
+        [
+          {
+            text: 'Yes',
+            onPress: () => {
+              // Navigate back to payment screen with extend flag
+              navigation.navigate('Payment', { lockerId, isExtending: true });
+            },
           },
-        },
-        { text: 'Cancel', style: 'cancel' },
-      ]
-    );
+          { text: 'Cancel', style: 'cancel' },
+        ]
+      );
+    }
   };
 
   const handleEndRental = () => {
-    Alert.alert(
-      'End Rental',
-      'Are you sure you want to end this rental? Make sure you have retrieved all your items.',
-      [
-        {
-          text: 'Yes, End Rental',
-          style: 'destructive',
-          onPress: () => {
-            Alert.alert('Thank You', 'Your rental has been ended successfully.', [
-              {
-                text: 'OK',
-                onPress: () => navigation.navigate('Home'),
-              },
-            ]);
+    if (Platform.OS === 'web') {
+      const confirmed = window.confirm(
+        'Are you sure you want to end this rental? Make sure you have retrieved all your items.'
+      );
+      if (confirmed) {
+        window.alert('Thank You! Your rental has been ended successfully.');
+        navigation.navigate('Home');
+      }
+    } else {
+      Alert.alert(
+        'End Rental',
+        'Are you sure you want to end this rental? Make sure you have retrieved all your items.',
+        [
+          {
+            text: 'Yes, End Rental',
+            style: 'destructive',
+            onPress: () => {
+              Alert.alert('Thank You', 'Your rental has been ended successfully.', [
+                {
+                  text: 'OK',
+                  onPress: () => navigation.navigate('Home'),
+                },
+              ]);
+            },
           },
-        },
-        { text: 'Cancel', style: 'cancel' },
-      ]
-    );
+          { text: 'Cancel', style: 'cancel' },
+        ]
+      );
+    }
   };
 
   const getProgressPercentage = () => {

@@ -15,12 +15,12 @@ const Stack = createStackNavigator();
 
 export default function AppNavigator() {
   return (
-    <NavigationContainer>
+    <NavigationContainer style={{ flex: 1 }}>
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{
           headerShown: false,
-          cardStyle: { backgroundColor: '#f5f5f5' },
+          cardStyle: { backgroundColor: '#f5f5f5', flex: 1 },
         }}
       >
         <Stack.Screen
