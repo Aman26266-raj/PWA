@@ -2,7 +2,7 @@
   "name": "pwa",
   "version": "1.0.0",
   "main": "index.js",
-  "homepage": "https://Aman26266-raj.github.io/PWA",
+  "homepage": "https://keub.github.io",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -10,7 +10,7 @@
     "web": "expo start --web",
     "build": "npx expo export --platform web",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist -r https://github.com/keub/keub.github.io.git -b main"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
