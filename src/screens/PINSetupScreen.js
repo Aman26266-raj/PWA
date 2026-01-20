@@ -10,9 +10,11 @@ import {
   TextInput,
   Alert,
   useWindowDimensions,
+  Modal,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import LottieView from 'lottie-react-native';
 
 export default function PINSetupScreen({ navigation, route }) {
   const { lockerId, duration, amount, paymentMethod } = route.params;
@@ -24,6 +26,8 @@ export default function PINSetupScreen({ navigation, route }) {
   const [confirmPin, setConfirmPin] = useState(['', '', '', '']);
   const [step, setStep] = useState(1); // 1 = create PIN, 2 = confirm PIN
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showAnimation, setShowAnimation] = useState(false);
+  const [animationType, setAnimationType] = useState('success'); // 'success' or 'error'
 
   const pinRefs = useRef([]);
   const confirmPinRefs = useRef([]);
@@ -72,21 +76,41 @@ export default function PINSetupScreen({ navigation, route }) {
     }
 
     if (step === 1) {
-      setStep(2);
+      // Show success animation for PIN creation
+      setAnimationType('success');
+      setShowAnimation(true);
+      
       setTimeout(() => {
-        confirmPinRefs.current[0]?.focus();
-      }, 300);
+        setShowAnimation(false);
+        setStep(2);
+        setTimeout(() => {
+          confirmPinRefs.current[0]?.focus();
+        }, 100);
+      }, 1500);
     } else {
       const confirmPinString = confirmPin.join('');
       
       if (confirmPinString !== pinString) {
-        Alert.alert('Error', 'PINs do not match. Please try again.');
-        setConfirmPin(['', '', '', '']);
-        confirmPinRefs.current[0]?.focus();
+        // Show error animation for PIN mismatch
+        setAnimationType('error');
+        setShowAnimation(true);
+        
+        setTimeout(() => {
+          setShowAnimation(false);
+          setConfirmPin(['', '', '', '']);
+          confirmPinRefs.current[0]?.focus();
+        }, 2000);
         return;
       }
 
-      handleActivateLocker(pinString);
+      // Show success animation for PIN confirmation
+      setAnimationType('success');
+      setShowAnimation(true);
+      
+      setTimeout(() => {
+        setShowAnimation(false);
+        handleActivateLocker(pinString);
+      }, 1500);
     }
   };
 
@@ -268,6 +292,41 @@ export default function PINSetupScreen({ navigation, route }) {
             </TouchableOpacity>
           )}
         </ScrollView>
+
+        {/* Animation Modal */}
+        <Modal
+          visible={showAnimation}
+          transparent
+          animationType="fade"
+        >
+          <View style={styles.animationModal}>
+            <View style={styles.animationContainer}>
+              <LottieView
+                source={
+                  animationType === 'success'
+                    ? require('../../assets/success.json')
+                    : require('../../assets/error.json')
+                }
+                autoPlay
+                loop={false}
+                style={styles.lottie}
+              />
+              <Text style={[
+                styles.animationText,
+                animationType === 'error' && styles.animationTextError
+              ]}>
+                {animationType === 'success' 
+                  ? step === 1 ? 'PIN Created!' : 'PIN Confirmed!' 
+                  : 'PINs Don\'t Match'}
+              </Text>
+              {animationType === 'error' && (
+                <Text style={styles.animationSubtext}>
+                  Please try again
+                </Text>
+              )}
+            </View>
+          </View>
+        </Modal>
       </View>
     </SafeAreaView>
   );
@@ -416,5 +475,38 @@ const styles = StyleSheet.create({
     color: '#4c669f',
     fontSize: 15,
     fontWeight: '600',
+  },
+  animationModal: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  animationContainer: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 30,
+    alignItems: 'center',
+    width: '80%',
+    maxWidth: 300,
+  },
+  lottie: {
+    width: 150,
+    height: 150,
+  },
+  animationText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#4c669f',
+    marginTop: 10,
+  },
+  animationTextError: {
+    color: '#ff3b30',
+  },
+  animationSubtext: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 5,
+    textAlign: 'center',
   },
 });

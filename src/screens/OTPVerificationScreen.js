@@ -11,9 +11,11 @@ import {
   useWindowDimensions,
   ScrollView,
   KeyboardAvoidingView,
+  Modal,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import LottieView from 'lottie-react-native';
 
 export default function OTPVerificationScreen({ navigation, route }) {
   const { phoneNumber } = route.params;
@@ -25,6 +27,8 @@ export default function OTPVerificationScreen({ navigation, route }) {
   const [timer, setTimer] = useState(60); // 60 seconds countdown
   const [canResend, setCanResend] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [showAnimation, setShowAnimation] = useState(false);
+  const [animationType, setAnimationType] = useState('success'); // 'success' or 'error'
   
   const inputRefs = useRef([]);
 
@@ -76,17 +80,37 @@ export default function OTPVerificationScreen({ navigation, route }) {
     
     // Simulate API call
     setTimeout(() => {
-      // For demo purposes, accept any 6-digit OTP
-      // In production, verify with backend
+      // Check for invalid OTP (555555)
+      if (otpCode === '555555') {
+        setIsVerifying(false);
+        setAnimationType('error');
+        setShowAnimation(true);
+        
+        setTimeout(() => {
+          setShowAnimation(false);
+          setOtp(['', '', '', '', '', '']);
+          inputRefs.current[0]?.focus();
+        }, 2500);
+        return;
+      }
+      
+      // For demo purposes, accept any other 6-digit OTP
       if (otpCode.length === 6) {
-        // Navigate directly to ChooseLocker screen
-        navigation.navigate('ChooseLocker');
+        setAnimationType('success');
+        setShowAnimation(true);
+        
+        setTimeout(() => {
+          setShowAnimation(false);
+          setIsVerifying(false);
+          // Navigate directly to ChooseLocker screen
+          navigation.navigate('ChooseLocker');
+        }, 2000);
       } else {
         Alert.alert('Error', 'Invalid OTP. Please try again.');
         setOtp(['', '', '', '', '', '']);
         inputRefs.current[0]?.focus();
+        setIsVerifying(false);
       }
-      setIsVerifying(false);
     }, 1500);
   };
 
@@ -263,6 +287,39 @@ export default function OTPVerificationScreen({ navigation, route }) {
       </View>
       </ScrollView>
     </KeyboardAvoidingView>
+
+    {/* Animation Modal */}
+    <Modal
+      visible={showAnimation}
+      transparent
+      animationType="fade"
+    >
+      <View style={styles.animationModal}>
+        <View style={styles.animationContainer}>
+          <LottieView
+            source={
+              animationType === 'success'
+                ? require('../../assets/success.json')
+                : require('../../assets/error.json')
+            }
+            autoPlay
+            loop={false}
+            style={styles.lottie}
+          />
+          <Text style={[
+            styles.animationText,
+            animationType === 'error' && styles.animationTextError
+          ]}>
+            {animationType === 'success' ? 'OTP Verified!' : 'Invalid OTP'}
+          </Text>
+          {animationType === 'error' && (
+            <Text style={styles.animationSubtext}>
+              Please try a different code
+            </Text>
+          )}
+        </View>
+      </View>
+    </Modal>
     </SafeAreaView>
   );
 }
@@ -408,5 +465,38 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 30,
     lineHeight: 18,
+  },
+  animationModal: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  animationContainer: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 30,
+    alignItems: 'center',
+    width: '80%',
+    maxWidth: 300,
+  },
+  lottie: {
+    width: 150,
+    height: 150,
+  },
+  animationText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#4c669f',
+    marginTop: 10,
+  },
+  animationTextError: {
+    color: '#ff3b30',
+  },
+  animationSubtext: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 5,
+    textAlign: 'center',
   },
 });
