@@ -12,10 +12,10 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Modal,
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import LottieView from 'lottie-react-native';
 
 export default function OTPVerificationScreen({ navigation, route }) {
   const { phoneNumber } = route.params;
@@ -296,14 +296,12 @@ export default function OTPVerificationScreen({ navigation, route }) {
     >
       <View style={styles.animationModal}>
         <View style={styles.animationContainer}>
-          <LottieView
+          <Image
             source={
               animationType === 'success'
-                ? require('../../assets/success.json')
-                : require('../../assets/error.json')
+                ? require('../../assets/success.gif')
+                : require('../../assets/fail.gif')
             }
-            autoPlay
-            loop={false}
             style={styles.lottie}
           />
           <Text style={[
