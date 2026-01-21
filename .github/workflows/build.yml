@@ -68,10 +68,13 @@ jobs:
   build-ios:
     name: Build iOS IPA
     runs-on: macos-latest
-    if: |
-      github.event_name != 'workflow_dispatch' || 
-      github.event.inputs.platform == 'all' || 
-      github.event.inputs.platform == 'ios'
+    # Disabled by default - requires Apple Developer Account and credentials
+    # Uncomment the condition below to enable iOS builds
+    if: false
+    # if: |
+    #   github.event_name != 'workflow_dispatch' || 
+    #   github.event.inputs.platform == 'all' || 
+    #   github.event.inputs.platform == 'ios'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
