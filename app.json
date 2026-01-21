@@ -48,6 +48,12 @@
         "resizeMode": "contain",
         "backgroundColor": "#ffffff"
       }
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "36f1dfa9-a4d5-450a-b30e-e89a8698f76a"
+      }
+    },
+    "owner": "amanraj12106020"
   }
 }
