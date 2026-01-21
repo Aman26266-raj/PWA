@@ -1,7 +1,7 @@
-# Fixes Applied for Mobile Compatibility
+# Fixes Applied for Mobile Compatibility & EAS Build Setup
 
 ## Summary
-The application was working on web but failing on Android/iOS devices. Here are all the fixes that were applied:
+The application was working on web but failing on Android/iOS devices. Additionally, we've set up complete APK/IPA build configuration and CI/CD pipelines. Here are all the fixes and enhancements that were applied:
 
 ## 1. Added react-native-gesture-handler
 
@@ -164,10 +164,95 @@ npm run ios
 
 ---
 
+## 🚀 EAS Build & CI/CD Setup (Latest)
+
+### Files Created
+
+1. **[eas.json](eas.json)** - EAS Build configuration
+   - Development, Preview, and Production profiles
+   - APK build configuration for Android
+   - IPA build configuration for iOS
+
+2. **[.github/workflows/build.yml](.github/workflows/build.yml)** - Main build pipeline
+   - Automated APK builds on Android
+   - Automated IPA builds on iOS (macOS runner)
+   - Triggered on push to main/develop branches
+   - Manual workflow dispatch option
+
+3. **[.github/workflows/ci.yml](.github/workflows/ci.yml)** - Continuous Integration
+   - Lint checks
+   - Dependency audits
+   - Test runs
+
+4. **[.github/workflows/release.yml](.github/workflows/release.yml)** - Release automation
+   - Production builds on version tags
+   - Automatic GitHub releases
+
+5. **Documentation**
+   - [BUILD_SETUP_GUIDE.md](BUILD_SETUP_GUIDE.md) - Complete setup guide
+   - [BUILD_QUICK_REFERENCE.md](BUILD_QUICK_REFERENCE.md) - Quick commands
+   - [FIRST_TIME_SETUP.md](FIRST_TIME_SETUP.md) - First-time setup instructions
+   - [WORKFLOW_DIAGRAMS.md](WORKFLOW_DIAGRAMS.md) - Visual workflow diagrams
+   - [BUILD_AND_CICD_COMPLETE.md](BUILD_AND_CICD_COMPLETE.md) - Complete reference
+
+### Current Status
+
+- [x] EAS configuration files created
+- [x] GitHub Actions workflows configured  
+- [x] EXPO_TOKEN added to GitHub secrets
+- [x] Dependencies installed
+- [x] Documentation completed
+- [x] Changes committed and pushed
+- [ ] **⏳ EAS login required - YOU ARE HERE**
+- [ ] **⏳ EAS project initialization required**
+- [ ] Final push to trigger successful builds
+
+### Next Steps to Complete
+
+#### Step 1: Login to EAS CLI
+
+Run the helper script:
+```bash
+./eas-login.sh
+```
+
+Or manually:
+```bash
+# Option 1: Username/Password
+npx eas-cli login
+
+# Option 2: Using EXPO_TOKEN (same one in GitHub secrets)
+export EXPO_TOKEN="your-expo-token-here"
+npx eas-cli whoami
+```
+
+#### Step 2: Initialize EAS Project
+```bash
+npx eas-cli init --id
+```
+
+This will link your project to EAS Build servers.
+
+#### Step 3: Commit and Push
+```bash
+git add .
+git commit -m "chore: Initialize EAS project with project ID"
+git push
+```
+
+#### Step 4: Builds Will Start Automatically! 🎉
+
+Watch at:
+- GitHub Actions: https://github.com/Aman26266-raj/PWA/actions
+- Expo Dashboard: https://expo.dev
+
+---
+
 ## Next Steps
 
-1. Test on actual Android/iOS devices (not just emulators)
-2. Implement Choose Locker screen with uploaded design
-3. Add backend API integration
-4. Deploy PWA to web hosting
-5. Build and publish to App Stores
+1. **Complete EAS initialization** (see above)
+2. Test on actual Android/iOS devices
+3. Implement Choose Locker screen with uploaded design
+4. Add backend API integration
+5. Deploy PWA to web hosting
+6. Build and publish to App Stores
