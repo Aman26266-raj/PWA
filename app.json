@@ -8,17 +8,17 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/image.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "bundleIdentifier": "com.yourcompany.pwa",
+      "bundleIdentifier": "com.keub.pwa",
       "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.yourcompany.pwa",
+      "package": "com.keub.pwa",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -31,7 +31,7 @@
       ]
     },
     "web": {
-      "favicon": "./assets/favicon.png",
+      "favicon": "./assets/image.png",
       "bundler": "metro",
       "output": "single",
       "name": "Locker App",
@@ -44,7 +44,7 @@
       "scope": "/",
       "startUrl": "/",
       "splash": {
-        "image": "./assets/splash-icon.png",
+        "image": "./assets/image.png",
         "resizeMode": "contain",
         "backgroundColor": "#ffffff"
       }
