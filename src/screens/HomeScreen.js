@@ -20,7 +20,7 @@ export default function HomeScreen({ navigation }) {
   const isMediumScreen = width >= 768 && width < 1024;
   const isLargeScreen = width >= 1024;
   
-  const lockerLocation = "Downtown Mall, 123 Main Street";
+  const lockerLocation = "Downtown Mall";
   const hourlyRate = "$2.50";
   const availableLockers = 42;
 
